@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PPL+U Log">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEtElEQVR4nO3bMUxcdQDH8f8TIXgXaBou3MJCGGyIpYTrSDsIjV0aNa1SIOqiRo026qBtotbFig5tF6226GKpEG1TkzrZWjiZW82diCERB2klgaH3PEM4jnMwMQ795ZFy997/z/t+5v+9/IZv3vHuDi/ZvN0Ad3Nf1ANgL+KARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAek+2t36X37+s98/NG9vXZ1dbVQKPj+XwW/cPvW7Uwmk8vnc7mc7/uOztjgkldfe/3KlW/vaWz11TCOzWhoaEilUqlUyhizq6tr//5HjDHlcvn69cnxiYls9of19fX4zIiKS28rdXV19fc9Ovrs2e+vfbd3756YzwiBS3H8p62t7fPPRkdGTjQ1NTGjdpyM41+HDh788sJYS0sLM2rE4TiMMTt2PDh67mxjYyMzasHtOIwxO3c+dPTNN6JeYcuM6nI+DmPM8PBQZ2dn1CtsmVFFET/K3vWxPplMpltbM5megYEnu7u7Ay/ied5LL77w8itHXJ9hGxvvHMVi8bf5+a++vnjoiYG33n5nbW0t8CV9fQ9v29a8JWdEyMY4/m98fOK9E+8HHquvr+/t7d3yM0JmexzGmPPnx+bm5gKPZXp64jAjTA7EUalULl/+JvBYe3t7HGaEyYE4jDE3f/wp8Ew6nY7JjNC4Ecfy8nLgmUTigZjMCI0bcXieF/UEY6yZERo34kilgr+5KBb/jsmM0LgRx0Y+g1pcXIzJjNA4EIfneY8/9mjgsfnf5+MwI0wOxPHM0091dHQEHrtx42YcZoTJ9jiGBgePHTsaeKxUKk1PT2/5GSGz8TekiUQinW7dnckcHjy8q6trIy+5evXanTuFLTkjQhHHcfrUydOnTm7yIpVK5cwnn26BGbax/W1lI8bGLszMzES9wpYZVeR8HPn8zyMffBj1CltmVJfbcczO/vrsc8+vrKwwoxYcjuPipUuDQ8NLS0vMqBEbn1YC/bGwcPz4u1NTWWbUlEtxlMvlycmp8fGJqWw2wv9DtGRGCCyNo1Qq+b5fKPi+7y/cWsjn8rlcPpfPFwqhfopgyYyo2Pjr89jOsI3Df5Ci1ogDEnFAIg5IxAHJ0kfZ2NrM98O/zM4eOBD8W7WN484BiTggEQck4oBEHJCIAxJxQCIOSF6yeXvUG2Ap7hyQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAcn784s9UW+ApbhzQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQekfwB0Zq/rftOANwAAAABJRU5ErkJggg==">
+<title>PPL+U Log</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --bg:#0B0E11;
+    --panel:#12161A;
+    --panel-2:#181D22;
+    --line:#232A31;
+    --amber:#E8A33D;
+    --amber-dim:#8C6420;
+    --text:#E7E9EA;
+    --text-dim:#8A9298;
+    --text-faint:#565E64;
+    --green:#4FA37A;
+    --red:#C0604D;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html{height:100%;}
+  html,body{
+    margin:0; padding:0; background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    height:100%;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  body{padding-bottom:40px; min-height:100%;}
+
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  header{
+    position:sticky; top:0; z-index:20;
+    background:linear-gradient(180deg, var(--bg) 80%, transparent);
+    padding:calc(18px + env(safe-area-inset-top)) 16px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em;
+    color:var(--amber); text-transform:uppercase; margin-bottom:4px; display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .eyebrow span.date{color:var(--text-faint); letter-spacing:0.05em;}
+  h1{font-size:20px; font-weight:800; margin:0 0 12px; letter-spacing:-0.01em;}
+
+  .daytabs{display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;}
+  .daytab{
+    flex:1; text-align:center; padding:9px 4px; border-radius:8px;
+    background:var(--panel); border:1px solid var(--line); color:var(--text-dim);
+    font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;
+  }
+  .daytab.active{background:var(--amber); border-color:var(--amber); color:#1A1200;}
+  .daytab .sub{display:block; font-size:9px; font-weight:500; opacity:0.75; margin-top:1px;}
+
+  main{padding:14px 16px 0;}
+
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:14px; margin-bottom:12px;
+  }
+  .card-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px;}
+  .ex-name{font-size:15px; font-weight:700; margin:0 0 3px;}
+  .ex-meta{font-size:11px; color:var(--text-dim); display:flex; gap:8px; flex-wrap:wrap;}
+  .tag{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; padding:2px 6px; border-radius:4px;
+    background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim);
+  }
+  .tag.target{color:var(--amber); border-color:var(--amber-dim);}
+  .gif-link{
+    flex-shrink:0; font-size:10px; color:var(--text-faint); text-decoration:none;
+    border:1px solid var(--line); border-radius:6px; padding:5px 8px; font-family:'IBM Plex Mono',monospace;
+  }
+  .gif-link:active{background:var(--panel-2);}
+
+  .last-session{
+    font-size:11px; color:var(--text-faint); margin-bottom:8px; font-family:'IBM Plex Mono',monospace;
+  }
+  .last-session b{color:var(--text-dim); font-weight:600;}
+
+  .sets{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;}
+  .set-chip{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; background:var(--panel-2);
+    border:1px solid var(--line); border-radius:6px; padding:6px 9px; display:flex; align-items:center; gap:6px;
+    color:var(--text);
+  }
+  .set-chip .n{color:var(--text-faint); font-size:10px;}
+  .set-chip .rm{color:var(--red); cursor:pointer; font-weight:700; padding-left:2px;}
+  .set-chip.done{border-color:var(--green); }
+
+  .add-row{display:flex; gap:6px;}
+  .add-row input{
+    flex:1; min-width:0; background:var(--bg); border:1px solid var(--line); border-radius:6px;
+    color:var(--text); font-family:'IBM Plex Mono',monospace; font-size:13px; padding:9px 8px;
+  }
+  .add-row input::placeholder{color:var(--text-faint);}
+  .add-row select{
+    background:var(--bg); border:1px solid var(--line); border-radius:6px; color:var(--text-dim);
+    font-family:'IBM Plex Mono',monospace; font-size:12px; padding:9px 4px;
+  }
+  .add-row button{
+    background:var(--amber); border:none; border-radius:6px; color:#1A1200; font-weight:700;
+    font-size:13px; padding:9px 14px; cursor:pointer;
+  }
+  .add-row button:active{opacity:0.85;}
+
+  .progress-note{
+    font-size:10px; margin-top:6px; font-family:'IBM Plex Mono',monospace;
+  }
+  .progress-note.up{color:var(--green);}
+  .progress-note.down{color:var(--red);}
+  .progress-note.flat{color:var(--text-faint);}
+
+  .footer-note{
+    padding:20px 16px 0; font-size:11px; color:var(--text-faint); text-align:center; font-family:'IBM Plex Mono',monospace;
+  }
+  .status{
+    position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
+    background:var(--panel-2); border:1px solid var(--amber-dim); color:var(--amber);
+    padding:7px 14px; border-radius:20px; font-size:11px; font-family:'IBM Plex Mono',monospace;
+    opacity:0; pointer-events:none; transition:opacity .25s; max-width:88vw; text-align:center;
+  }
+  .status.show{opacity:1;}
+
+  .io-row{display:flex; gap:8px; margin-top:10px;}
+  .io-btn{
+    flex:1; background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim);
+    font-family:'IBM Plex Mono',monospace; font-size:11px; padding:8px; border-radius:7px; cursor:pointer;
+  }
+  .io-btn.primary{background:var(--amber); color:#1A1200; border-color:var(--amber); font-weight:700;}
+  .io-modal{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:50;
+    align-items:flex-end; justify-content:center;
+  }
+  .io-modal.show{display:flex;}
+  .io-box{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px 14px 0 0;
+    width:100%; max-width:480px; padding:16px; padding-bottom:24px;
+  }
+  .io-title{font-size:13px; font-weight:700; margin:0 0 8px;}
+  .io-textarea{
+    width:100%; height:160px; background:var(--bg); border:1px solid var(--line); border-radius:8px;
+    color:var(--text); font-family:'IBM Plex Mono',monospace; font-size:11px; padding:10px; resize:none;
+  }
+  .io-actions{display:flex; gap:8px; margin-top:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow"><span>Push / Pull / Legs / Upper</span><span class="date mono" id="todayLabel"></span></div>
+  <h1>Session Log</h1>
+  <div class="daytabs" id="dayTabs"></div>
+  <div class="io-row">
+    <button id="exportBtn" class="io-btn">Copy Log</button>
+    <button id="importBtn" class="io-btn">Paste Log</button>
+    <button id="historyBtn" class="io-btn">History</button>
+  </div>
+</header>
+
+<div class="io-modal" id="ioModal">
+  <div class="io-box">
+    <p class="io-title" id="ioTitle">Log Text</p>
+    <textarea id="ioText" class="io-textarea"></textarea>
+    <div class="io-actions">
+      <button id="ioCancel" class="io-btn">Close</button>
+      <button id="ioConfirm" class="io-btn primary" style="display:none;">Restore</button>
+    </div>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<div class="footer-note">Logged sets are saved to this device. Weight units are whatever you enter (kg/lb) — kept as-is per set.</div>
+<div class="status" id="status">Saved</div>
+
+<script>
+const PROGRAM = {
+  push: { label:"Day 1 · Push", sub:"Chest/Shldr/Tri", exercises:[
+    {id:"bench", name:"Barbell Bench Press", target:"4 x 6-8", muscle:"Chest", gif:"https://musclewiki.com/exercise/barbell-bench-press"},
+    {id:"incline_db", name:"Incline Dumbbell Press", target:"3 x 8-10", muscle:"Upper Chest", gif:"https://musclewiki.com/exercise/dumbbell-incline-bench-press"},
+    {id:"seated_db_press", name:"Seated Dumbbell Shoulder Press", target:"3 x 8-10", muscle:"Shoulders", gif:"https://musclewiki.com/exercise/dumbbell-seated-overhead-press"},
+    {id:"cable_fly", name:"Cable Fly", target:"3 x 12-15", muscle:"Chest", gif:"https://musclewiki.com/exercise/cable-pec-fly"},
+    {id:"lateral_raise", name:"Lateral Raise", target:"3 x 12-15", muscle:"Side Delts", gif:"https://musclewiki.com/exercise/dumbbell-lateral-raise"},
+    {id:"tri_pushdown", name:"Triceps Rope Pushdown", target:"3 x 10-12", muscle:"Triceps", gif:"https://musclewiki.com/exercise/cable-rope-pushdown"},
+  ]},
+  pull: { label:"Day 2 · Pull", sub:"Back/Biceps", exercises:[
+    {id:"lat_pulldown", name:"Lat Pulldown / Pull-ups", target:"4 x 6-8", muscle:"Lats", gif:"https://musclewiki.com/exercise/machine-pulldown"},
+    {id:"bb_row", name:"Barbell/Machine Row", target:"4 x 8-10", muscle:"Mid Back", gif:"https://musclewiki.com/exercise/barbell-bent-over-row"},
+    {id:"seated_cable_row", name:"Seated Cable Row", target:"3 x 10-12", muscle:"Mid Back", gif:"https://musclewiki.com/exercise/machine-seated-cable-row"},
+    {id:"face_pull", name:"Face Pull", target:"3 x 12-15", muscle:"Rear Delts/Traps", gif:"https://musclewiki.com/exercise/machine-face-pulls"},
+    {id:"bb_curl", name:"Barbell/Dumbbell Curl", target:"3 x 10-12", muscle:"Biceps", gif:"https://musclewiki.com/exercise/barbell-curl"},
+    {id:"hammer_curl", name:"Hammer Curl", target:"3 x 10-12", muscle:"Biceps/Brachialis", gif:"https://musclewiki.com/exercise/dumbbell-hammer-curl"},
+  ]},
+  legs: { label:"Day 3 · Legs", sub:"", exercises:[
+    {id:"squat", name:"Squat (Barbell/Leg Press)", target:"4 x 6-8", muscle:"Quads/Glutes", gif:"https://musclewiki.com/exercise/barbell-squat"},
+    {id:"rdl", name:"Romanian Deadlift", target:"3 x 8-10", muscle:"Hamstrings/Glutes", gif:"https://musclewiki.com/exercise/barbell-romanian-deadlift"},
+    {id:"leg_ext", name:"Leg Extension", target:"3 x 12-15", muscle:"Quads", gif:"https://musclewiki.com/exercise/machine-leg-extension"},
+    {id:"leg_curl", name:"Leg Curl", target:"3 x 12-15", muscle:"Hamstrings", gif:"https://musclewiki.com/exercise/machine-seated-leg-curl"},
+    {id:"walking_lunge", name:"Walking Lunge", target:"3 x 10/leg", muscle:"Quads/Glutes", gif:"https://musclewiki.com/bodyweight/male/glutes/lunge-walking"},
+    {id:"calf_raise", name:"Standing Calf Raise", target:"4 x 12-15", muscle:"Calves", gif:"https://musclewiki.com/exercise/dumbbell-calf-raise"},
+  ]},
+  upper: { label:"Day 4 · Upper", sub:"Push+Pull", exercises:[
+    {id:"incline_press_u", name:"Incline Barbell/DB Press", target:"3 x 8-10", muscle:"Upper Chest", gif:"https://musclewiki.com/exercise/dumbbell-incline-bench-press"},
+    {id:"chest_row", name:"Chest-Supported Row", target:"3 x 8-10", muscle:"Mid Back", gif:"https://musclewiki.com/exercise/machine-chest-supported-t-bar-row"},
+    {id:"arnold_press", name:"Arnold Press", target:"3 x 10-12", muscle:"Shoulders", gif:"https://musclewiki.com/dumbbells/male/triceps/dumbbell-seated-arnold-press"},
+    {id:"pulldown_wide", name:"Pulldown (Wide Grip)", target:"3 x 10-12", muscle:"Lats", gif:"https://musclewiki.com/exercise/machine-pulldown"},
+    {id:"cable_curl", name:"Cable Curl", target:"2 x 12-15", muscle:"Biceps", gif:"https://musclewiki.com/exercise/cable-bar-curl"},
+    {id:"oh_tri_ext", name:"Overhead Triceps Extension", target:"2 x 12-15", muscle:"Triceps", gif:"https://musclewiki.com/exercise/dumbbell-overhead-tricep-extension"},
+  ]}
+};
+
+const TODAY = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+let activeDay = "push";
+let cache = {}; // dayKey -> { exerciseId: [{w,u,r}] } — for TODAY only (current UI state)
+let allData = {}; // date -> { dayKey -> {exerciseId: [...]} } — full in-memory history this session
+
+// Preloaded Day 1 (today) session, as reported
+const PRELOAD_PUSH = {
+  bench:            [{w:30,u:"kg",r:6},{w:30,u:"kg",r:6},{w:30,u:"kg",r:6},{w:30,u:"kg",r:6}],
+  incline_db:       [{w:30,u:"kg",r:6},{w:30,u:"kg",r:6},{w:30,u:"kg",r:6},{w:30,u:"kg",r:6}],
+  seated_db_press:  [{w:30,u:"lb",r:10},{w:30,u:"lb",r:8},{w:30,u:"lb",r:8}],
+  cable_fly:        [{w:32,u:"kg",r:15},{w:40,u:"kg",r:10},{w:40,u:"kg",r:10}],
+  lateral_raise:    [{w:10,u:"lb",r:15},{w:10,u:"lb",r:15},{w:10,u:"lb",r:15}],
+  tri_pushdown:      [{w:40,u:"kg",r:15},{w:40,u:"kg",r:10},{w:30,u:"kg",r:10}],
+  _cardio:           [{incl:15, spd:3.0, dist:500, min:null},{incl:2.5, spd:7, dist:1000, min:null}]
+};
+
+const LS_KEY = 'pplu_tracker_data_v1';
+
+function loadFromLocalStorage(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){
+    return {}; // localStorage unavailable (e.g. private browsing, or sandboxed preview)
+  }
+}
+
+function saveToLocalStorage(){
+  try{
+    localStorage.setItem(LS_KEY, JSON.stringify(allData));
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+function dayBucket(date, dayKey){
+  if(!allData[date]) allData[date] = {};
+  if(!allData[date][dayKey]) allData[date][dayKey] = {};
+  return allData[date][dayKey];
+}
+
+function storageKey(dayKey, date){ return `log:${date}:${dayKey}`; }
+
+function loadDay(dayKey, date){
+  return dayBucket(date, dayKey);
+}
+
+async function saveDay(dayKey, date, data){
+  allData[date][dayKey] = data;
+  const lsOk = saveToLocalStorage();
+  // Also try Claude's artifact storage as a bonus when running inside Claude's preview —
+  // harmless no-op / silent failure when running standalone in Safari.
+  try{
+    if(window.storage && window.storage.set) await window.storage.set(storageKey(dayKey, date), JSON.stringify(data), false);
+  }catch(e){ /* ignore */ }
+  flashStatus(lsOk ? "Saved to this device" : "Saved to session only");
+}
+
+function flashStatus(msg){
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.classList.add('show');
+  const dur = msg.startsWith('⚠') ? 3200 : 1100;
+  clearTimeout(window._statusTimer);
+  window._statusTimer = setTimeout(()=>el.classList.remove('show'), dur);
+}
+
+function findLastSession(dayKey, exerciseId, beforeDate){
+  const dates = Object.keys(allData).filter(d => d < beforeDate && allData[d][dayKey]).sort().reverse();
+  for(const d of dates){
+    const data = allData[d][dayKey];
+    if(data[exerciseId] && data[exerciseId].length){
+      return { date: d, sets: data[exerciseId] };
+    }
+  }
+  return null;
+}
+
+function fmtSets(sets){
+  if(!sets || !sets.length) return "";
+  // group identical weight+unit runs
+  const parts = [];
+  let i=0;
+  while(i<sets.length){
+    let j=i;
+    while(j+1<sets.length && sets[j+1].w===sets[i].w && sets[j+1].u===sets[i].u && sets[j+1].r===sets[i].r) j++;
+    const count = j-i+1;
+    parts.push(`${count}x${sets[i].r} @ ${sets[i].w}${sets[i].u}`);
+    i=j+1;
+  }
+  return parts.join(", ");
+}
+
+function renderTabs(){
+  const wrap = document.getElementById('dayTabs');
+  wrap.innerHTML = "";
+  Object.keys(PROGRAM).forEach(key=>{
+    const d = PROGRAM[key];
+    const btn = document.createElement('div');
+    btn.className = 'daytab' + (key===activeDay?' active':'');
+    btn.innerHTML = `${d.label.split('·')[0].trim()}<span class="sub">${d.label.split('·')[1]?.trim()||''}</span>`;
+    btn.onclick = ()=>{ activeDay = key; renderTabs(); renderMain(); };
+    wrap.appendChild(btn);
+  });
+}
+
+async function renderMain(){
+  const main = document.getElementById('main');
+  main.innerHTML = "<div style='color:var(--text-faint); font-size:12px; padding:20px 0;' class='mono'>Loading…</div>";
+  const dayData = PROGRAM[activeDay];
+  const log = await loadDay(activeDay, TODAY);
+  cache[activeDay] = log;
+
+  main.innerHTML = "";
+
+  // Cardio / cooldown card
+  const cardioCard = document.createElement('div');
+  cardioCard.className = 'card';
+  const cardioLog = log["_cardio"] || [];
+  cardioCard.innerHTML = `
+    <div class="card-head">
+      <div>
+        <p class="ex-name">Cooldown Cardio</p>
+        <div class="ex-meta"><span class="tag">Incline Treadmill</span></div>
+      </div>
+    </div>
+    <div class="sets" data-ex="_cardio"></div>
+    <div class="add-row">
+      <input type="number" inputmode="decimal" placeholder="incl %" class="c-incl" style="max-width:60px;">
+      <input type="number" inputmode="decimal" placeholder="spd" class="c-spd" style="max-width:50px;">
+      <input type="number" inputmode="decimal" placeholder="dist m" class="c-dist" style="max-width:60px;">
+      <input type="number" inputmode="numeric" placeholder="min" class="c-min" style="max-width:50px;">
+      <button class="add-cardio-btn">Add</button>
+    </div>
+  `;
+  main.appendChild(cardioCard);
+  renderCardioChips(cardioCard, cardioLog);
+  cardioCard.querySelector('.add-cardio-btn').onclick = async ()=>{
+    const incl = parseFloat(cardioCard.querySelector('.c-incl').value);
+    const spd = parseFloat(cardioCard.querySelector('.c-spd').value);
+    const dist = parseFloat(cardioCard.querySelector('.c-dist').value);
+    const min = parseInt(cardioCard.querySelector('.c-min').value);
+    if(isNaN(min) && isNaN(dist)){ flashStatus("Enter distance or duration"); return; }
+    const current = cache[activeDay]["_cardio"] || [];
+    current.push({
+      incl: isNaN(incl)?null:incl,
+      spd: isNaN(spd)?null:spd,
+      dist: isNaN(dist)?null:dist,
+      min: isNaN(min)?null:min
+    });
+    cache[activeDay]["_cardio"] = current;
+    await saveDay(activeDay, TODAY, cache[activeDay]);
+    renderCardioChips(cardioCard, current);
+    cardioCard.querySelector('.c-incl').value="";
+    cardioCard.querySelector('.c-spd').value="";
+    cardioCard.querySelector('.c-dist').value="";
+    cardioCard.querySelector('.c-min').value="";
+  };
+
+  for(const ex of dayData.exercises){
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const sets = log[ex.id] || [];
+    const last = findLastSession(activeDay, ex.id, TODAY);
+
+    card.innerHTML = `
+      <div class="card-head">
+        <div>
+          <p class="ex-name">${ex.name}</p>
+          <div class="ex-meta">
+            <span class="tag target">${ex.target}</span>
+            <span class="tag">${ex.muscle}</span>
+          </div>
+        </div>
+        <a class="gif-link" href="${ex.gif}" target="_blank" rel="noopener">GIF ↗</a>
+      </div>
+      ${last ? `<div class="last-session">Last (${last.date}): <b>${fmtSets(last.sets)}</b></div>` : `<div class="last-session">No prior session logged</div>`}
+      <div class="sets" data-ex="${ex.id}"></div>
+      <div class="add-row">
+        <input type="number" inputmode="decimal" placeholder="wt" class="w-input" style="max-width:64px;">
+        <select class="u-input">
+          <option value="kg">kg</option>
+          <option value="lb">lb</option>
+        </select>
+        <input type="number" inputmode="numeric" placeholder="reps" class="r-input" style="max-width:64px;">
+        <button class="add-btn">Add set</button>
+      </div>
+    `;
+    main.appendChild(card);
+    renderSetChips(card, ex.id, sets);
+
+    const addBtn = card.querySelector('.add-btn');
+    addBtn.onclick = async ()=>{
+      const wIn = card.querySelector('.w-input');
+      const uIn = card.querySelector('.u-input');
+      const rIn = card.querySelector('.r-input');
+      const w = parseFloat(wIn.value);
+      const r = parseInt(rIn.value);
+      if(isNaN(w) || isNaN(r) || r<=0){ flashStatus("Enter weight & reps"); return; }
+      const current = cache[activeDay][ex.id] || [];
+      current.push({w, u: uIn.value, r});
+      cache[activeDay][ex.id] = current;
+      await saveDay(activeDay, TODAY, cache[activeDay]);
+      renderSetChips(card, ex.id, current);
+      wIn.value=""; rIn.value="";
+    };
+  }
+}
+
+function renderSetChips(card, exId, sets){
+  const wrap = card.querySelector(`.sets[data-ex="${exId}"]`);
+  wrap.innerHTML = "";
+  sets.forEach((s, idx)=>{
+    const chip = document.createElement('div');
+    chip.className = 'set-chip done';
+    chip.innerHTML = `<span class="n">#${idx+1}</span> ${s.r} @ ${s.w}${s.u} <span class="rm" data-idx="${idx}">×</span>`;
+    wrap.appendChild(chip);
+  });
+  wrap.querySelectorAll('.rm').forEach(rm=>{
+    rm.onclick = async (e)=>{
+      const idx = parseInt(e.target.getAttribute('data-idx'));
+      const current = cache[activeDay][exId] || [];
+      current.splice(idx,1);
+      cache[activeDay][exId] = current;
+      await saveDay(activeDay, TODAY, cache[activeDay]);
+      renderSetChips(card, exId, current);
+    };
+  });
+}
+
+function renderCardioChips(card, entries){
+  const wrap = card.querySelector('.sets[data-ex="_cardio"]');
+  wrap.innerHTML = "";
+  entries.forEach((c, idx)=>{
+    const chip = document.createElement('div');
+    chip.className = 'set-chip done';
+    const parts = [];
+    if(c.dist!==null && c.dist!==undefined) parts.push(`${c.dist}m`);
+    if(c.min!==null && c.min!==undefined) parts.push(`${c.min} min`);
+    if(c.incl!==null && c.incl!==undefined) parts.push(`${c.incl}% incl`);
+    if(c.spd!==null && c.spd!==undefined) parts.push(`${c.spd} spd`);
+    chip.innerHTML = `<span class="n">#${idx+1}</span> ${parts.join(' · ')} <span class="rm" data-idx="${idx}">×</span>`;
+    wrap.appendChild(chip);
+  });
+  wrap.querySelectorAll('.rm').forEach(rm=>{
+    rm.onclick = async (e)=>{
+      const idx = parseInt(e.target.getAttribute('data-idx'));
+      const current = cache[activeDay]["_cardio"] || [];
+      current.splice(idx,1);
+      cache[activeDay]["_cardio"] = current;
+      await saveDay(activeDay, TODAY, cache[activeDay]);
+      renderCardioChips(card, current);
+    };
+  });
+}
+
+async function init(){
+  document.getElementById('todayLabel').textContent = TODAY;
+  renderTabs();
+
+  // Restore from localStorage (works when opened standalone in Safari)
+  allData = loadFromLocalStorage();
+
+  // Preload today's push session only if nothing's already stored for it
+  dayBucket(TODAY, 'push');
+  if(Object.keys(allData[TODAY]['push']).length === 0){
+    allData[TODAY]['push'] = PRELOAD_PUSH;
+    saveToLocalStorage();
+  }
+
+  renderMain();
+  wireExportImport();
+}
+
+function compileLogText(){
+  const lines = [`PPL+U LOG EXPORT`];
+  const dates = Object.keys(allData).sort();
+  for(const d of dates){
+    for(const dayKey of Object.keys(allData[d])){
+      const dayLabel = PROGRAM[dayKey] ? PROGRAM[dayKey].label : dayKey;
+      lines.push(`\n[${d}] ${dayLabel}`);
+      const entries = allData[d][dayKey];
+      for(const exId of Object.keys(entries)){
+        if(exId === '_cardio'){
+          if(entries[exId].length){
+            const c = entries[exId].map(c=>{
+              const p=[]; if(c.dist!=null)p.push(`${c.dist}m`); if(c.min!=null)p.push(`${c.min}min`);
+              if(c.incl!=null)p.push(`${c.incl}%incl`); if(c.spd!=null)p.push(`${c.spd}spd`);
+              return p.join(' ');
+            }).join(' | ');
+            lines.push(`  Cardio: ${c}`);
+          }
+          continue;
+        }
+        const exMeta = PROGRAM[dayKey]?.exercises.find(e=>e.id===exId);
+        const name = exMeta ? exMeta.name : exId;
+        lines.push(`  ${name}: ${fmtSets(entries[exId])}`);
+      }
+    }
+  }
+  lines.push(`\n---JSON---`);
+  lines.push(JSON.stringify(allData));
+  return lines.join('\n');
+}
+
+function compileDayHistory(dayKey){
+  const dates = Object.keys(allData).filter(d => allData[d][dayKey]).sort().reverse();
+  if(dates.length === 0) return "No sessions logged yet for this day type.\n\n(If you're starting a fresh session, use Paste Log first to bring in earlier history.)";
+  const lines = [];
+  for(const d of dates){
+    const entries = allData[d][dayKey];
+    const hasAny = Object.values(entries).some(v => Array.isArray(v) && v.length);
+    if(!hasAny) continue;
+    lines.push(`${d}`);
+    lines.push('─'.repeat(24));
+    for(const exId of Object.keys(entries)){
+      if(!entries[exId] || !entries[exId].length) continue;
+      if(exId === '_cardio'){
+        const c = entries[exId].map(c=>{
+          const p=[]; if(c.dist!=null)p.push(`${c.dist}m`); if(c.min!=null)p.push(`${c.min}min`);
+          if(c.incl!=null)p.push(`${c.incl}%incl`); if(c.spd!=null)p.push(`${c.spd}spd`);
+          return p.join(' ');
+        }).join(' | ');
+        lines.push(`  Cardio: ${c}`);
+        continue;
+      }
+      const exMeta = PROGRAM[dayKey]?.exercises.find(e=>e.id===exId);
+      const name = exMeta ? exMeta.name : exId;
+      lines.push(`  ${name}: ${fmtSets(entries[exId])}`);
+    }
+    lines.push('');
+  }
+  return lines.join('\n');
+}
+
+function wireExportImport(){
+  const modal = document.getElementById('ioModal');
+  const textArea = document.getElementById('ioText');
+  const title = document.getElementById('ioTitle');
+  const confirmBtn = document.getElementById('ioConfirm');
+
+  document.getElementById('exportBtn').onclick = ()=>{
+    title.textContent = "Copy this into Notes/WhatsApp — this is your real save (storage backend here is unreliable)";
+    textArea.value = compileLogText();
+    confirmBtn.style.display = 'none';
+    modal.classList.add('show');
+    textArea.focus();
+    textArea.select();
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(textArea.value).then(()=>flashStatus("Copied to clipboard")).catch(()=>{});
+    }
+  };
+
+  document.getElementById('importBtn').onclick = ()=>{
+    title.textContent = "Paste the full text you previously copied (including the ---JSON--- line)";
+    textArea.value = "";
+    confirmBtn.style.display = 'block';
+    modal.classList.add('show');
+    textArea.focus();
+  };
+
+  document.getElementById('historyBtn').onclick = ()=>{
+    const dayLabel = PROGRAM[activeDay].label;
+    title.textContent = `History — ${dayLabel}`;
+    textArea.value = compileDayHistory(activeDay);
+    confirmBtn.style.display = 'none';
+    modal.classList.add('show');
+  };
+
+  document.getElementById('ioCancel').onclick = ()=>{ modal.classList.remove('show'); };
+
+  confirmBtn.onclick = ()=>{
+    try{
+      const raw = textArea.value;
+      const marker = '---JSON---';
+      const idx = raw.indexOf(marker);
+      const jsonStr = idx >= 0 ? raw.slice(idx + marker.length).trim() : raw.trim();
+      const parsed = JSON.parse(jsonStr);
+      // Merge rather than overwrite, so pasting older exports adds to history
+      // instead of erasing whatever's already logged this session.
+      for(const date of Object.keys(parsed)){
+        if(!allData[date]) allData[date] = {};
+        for(const dayKey of Object.keys(parsed[date])){
+          allData[date][dayKey] = { ...(allData[date][dayKey]||{}), ...parsed[date][dayKey] };
+        }
+      }
+      modal.classList.remove('show');
+      saveToLocalStorage();
+      renderMain();
+      flashStatus("Merged into history");
+    }catch(e){
+      flashStatus("⚠ Couldn't parse — paste the full copied text");
+    }
+  };
+}
+
+init();
+</script>
+</body>
+</html>
